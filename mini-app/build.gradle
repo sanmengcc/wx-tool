@@ -4,7 +4,7 @@ plugins {
 
 group 'com.sanmengcc'
 version '1.0'
-archivesBaseName = 'mini-app'
+archivesBaseName = 'wx-tool-mini-app'
 
 repositories {
     mavenCentral()
