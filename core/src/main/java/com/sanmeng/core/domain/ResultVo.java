@@ -16,14 +16,16 @@ public class ResultVo implements Serializable {
 
     /**
      * 错误码
-     */
-    private Integer errcode;
-
-    /**
-     * 错误信息
      * 0	请求成功
      * -1	系统繁忙，此时请开发者稍候再试
      */
-    private String errmsg;
+    @Builder.Default
+    private Integer errcode = 0;
+
+    /**
+     * 错误信息
+     */
+    @Builder.Default
+    private String errmsg = "success";
 
 }
