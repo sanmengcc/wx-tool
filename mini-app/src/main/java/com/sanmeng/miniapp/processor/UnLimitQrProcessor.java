@@ -11,7 +11,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * @Author：胡侯东
  * @Date：2021/4/27 4:15 下午
- * @Desc:
+ * @Desc: https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html
  */
 @SuperBuilder
 public class UnLimitQrProcessor extends BaseProcessor {
