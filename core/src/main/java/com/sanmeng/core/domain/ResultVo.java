@@ -1,5 +1,6 @@
 package com.sanmeng.core.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -25,4 +26,11 @@ public class ResultVo implements Serializable {
      */
     private String errmsg = "success";
 
+    public ResultVo() {
+    }
+
+    public ResultVo(Integer errcode, String errmsg) {
+        this.errcode = errcode;
+        this.errmsg = errmsg;
+    }
 }

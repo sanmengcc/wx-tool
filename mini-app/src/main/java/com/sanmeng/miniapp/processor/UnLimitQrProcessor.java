@@ -9,6 +9,7 @@ import com.sanmeng.miniapp.domian.result.StreamDomainVo;
 import lombok.Builder;
 
 /**
+ * 生成无限的小程序二维码
  * @Author：胡侯东
  * @Date：2021/4/27 4:15 下午
  * @Desc: https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html

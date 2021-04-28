@@ -1,6 +1,10 @@
 package com.sanmeng.core.util;
 
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -36,7 +40,7 @@ public class HttpUtil {
     /**
      * post form表单
      */
-    public static String post(String url, Map<String, String> parameters,Map<String, String> header) {
+    public static String post(String url, Map<String, String> parameters, Map<String, String> header) {
         String content = generatorParamString(parameters);
         return getResponseBody(sendPost(url, content, header));
     }
@@ -50,21 +54,23 @@ public class HttpUtil {
 
     /**
      * 带参数的GET请求
+     *
      * @param url
      * @param param
      * @return
      */
-    public static String get(String url,Map<String, String> param) {
+    public static String get(String url, Map<String, String> param) {
         return get(url, param, null);
     }
 
     /**
      * 带参数的GET请求
+     *
      * @param url
      * @param param
      * @return
      */
-    public static String get(String url,Map<String, String> param,Map<String, String> header) {
+    public static String get(String url, Map<String, String> param, Map<String, String> header) {
         return sendGet(url, param, header);
     }
 
@@ -77,26 +83,29 @@ public class HttpUtil {
 
     /**
      * 带参数的GET请求
+     *
      * @param url
      * @param param
      * @return
      */
-    public static byte[] getPayload(String url,Map<String, String> param) {
+    public static byte[] getPayload(String url, Map<String, String> param) {
         return sendGetStream(url, param, null);
     }
 
     /**
      * 带参数的GET请求
+     *
      * @param url
      * @param param
      * @return
      */
-    public static byte[] getPayload(String url,Map<String, String> param,Map<String, String> header) {
+    public static byte[] getPayload(String url, Map<String, String> param, Map<String, String> header) {
         return sendGetStream(url, param, header);
     }
 
     /**
      * 获取响应体
+     *
      * @param urlConn
      * @return
      */
@@ -124,6 +133,7 @@ public class HttpUtil {
 
     /**
      * 获取响应的流
+     *
      * @param urlConn
      * @return
      */
@@ -137,7 +147,7 @@ public class HttpUtil {
             while ((len = inputStream.read(data)) != -1) {
                 out.write(data, 0, len);
             }
-            if(inputStream!=null){
+            if (inputStream != null) {
                 inputStream.close();
             }
             return out.toByteArray();
@@ -148,6 +158,7 @@ public class HttpUtil {
 
     /**
      * 发送字符串的post请求
+     *
      * @param url
      * @param content
      * @return
@@ -158,6 +169,7 @@ public class HttpUtil {
 
     /**
      * 发送get请求
+     *
      * @param url
      * @param param
      * @param header
@@ -165,10 +177,14 @@ public class HttpUtil {
      */
     private static String sendGet(String url, Map param, Map<String, String> header) {
         try {
-            URL httpUrl = new URL(url + generatorParamString(param));
-            HttpURLConnection conn = (HttpURLConnection) httpUrl.openConnection();
+            HttpURLConnection conn = getURLConnection(url + generatorParamString(param));
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
+            if (Objects.nonNull(header) && !header.isEmpty()) {
+                for (String h : header.keySet()) {
+                    conn.setRequestProperty(h, header.get(h));
+                }
+            }
             BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
             ByteArrayOutputStream out = new ByteArrayOutputStream();
             byte[] buf = new byte[1024];
@@ -186,8 +202,12 @@ public class HttpUtil {
         try {
             String spec = url + generatorParamString(param);
             System.out.println(spec);
-            URL httpUrl = new URL(spec);
-            HttpURLConnection conn = (HttpURLConnection) httpUrl.openConnection();
+            HttpURLConnection conn = getURLConnection(spec);
+            if (Objects.nonNull(header) && !header.isEmpty()) {
+                for (String h : header.keySet()) {
+                    conn.setRequestProperty(h, header.get(h));
+                }
+            }
             conn.setRequestMethod("GET");
             conn.setRequestProperty("User-Agent", "Mozilla/5.0");
             BufferedInputStream in = new BufferedInputStream(conn.getInputStream());
@@ -206,16 +226,15 @@ public class HttpUtil {
 
     /**
      * 发送字符串的post请求携带请求头
+     *
      * @param url
      * @param content
      * @param header
      * @return
      */
     private static HttpURLConnection sendPost(String url, String content, Map<String, String> header) {
-        HttpURLConnection urlConn = null;
+        HttpURLConnection urlConn = getURLConnection(url);
         try {
-            URL httpUrl = new URL(url);
-            urlConn = (HttpURLConnection) httpUrl.openConnection();
             urlConn.setRequestMethod("POST");
             urlConn.setConnectTimeout(50000);
             urlConn.setReadTimeout(50000);
@@ -237,7 +256,8 @@ public class HttpUtil {
     }
 
     /**
-     将parameters中数据转换成用"&"链接的http请求参数形式
+     * 将parameters中数据转换成用"&"链接的http请求参数形式
+     *
      * @param parameters
      * @return
      */
@@ -259,12 +279,17 @@ public class HttpUtil {
                 }
             }
         }
-        return "?" + params.toString();
+        String param = params.toString();
+        if (ValidateHelper.isEmptyString(param)) {
+            return param;
+        }
+        return "?" + param;
     }
 
 
     /**
-     用于生成升序排列的请求参数字符串（支付回调常用的方法）
+     * 用于生成升序排列的请求参数字符串（支付回调常用的方法）
+     *
      * @param params
      * @param sign
      * @return
@@ -287,6 +312,31 @@ public class HttpUtil {
             }
         }
         return content.toString();
+    }
+
+    public static HttpURLConnection getURLConnection(String requestUrl) {
+        try {
+            System.out.println(requestUrl);
+            if (requestUrl.contains("https://")) {
+                // 创建SSLContext
+                SSLContext sslContext = SSLContext.getInstance("SSL");
+                TrustManager[] tm = {new MyX509TrustManager()};
+                // 初始化
+                sslContext.init(null, tm, new java.security.SecureRandom());
+                // 获取SSLSocketFactory对象
+                SSLSocketFactory ssf = sslContext.getSocketFactory();
+                URL url = new URL(requestUrl);
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                // 设置当前实例使用的SSLSoctetFactory
+                connection.setSSLSocketFactory(ssf);
+                return connection;
+            }else{
+                URL httpUrl = new URL(requestUrl);
+                return (HttpURLConnection) httpUrl.openConnection();
+            }
+        } catch (Exception e) {
+            return null;
+        }
     }
 
 }
