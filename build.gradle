@@ -1,0 +1,68 @@
+plugins {
+    id 'org.springframework.boot' version '2.3.2.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+    id 'maven'
+    id 'idea'
+}
+
+group = 'com.sanmengcc'
+version = '1.0'
+sourceCompatibility = '1.8'
+def artifactId = "wx-tool"
+archivesBaseName = "wx-tool"
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+allprojects {
+    repositories {
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/groups/public/'
+        }
+        maven {
+            url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'
+        }
+    }
+
+}
+//子模块配置
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: "idea"
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    tasks.withType(JavaCompile) {
+        options.encoding = 'UTF-8'
+    }
+
+    //配置依赖
+    dependencies {
+        compileOnly 'org.projectlombok:lombok:1.18.16'
+        annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+        compile ("com.alibaba:fastjson:1.2.73")
+
+        testCompileOnly 'org.projectlombok:lombok:1.18.16'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+    }
+}
+
+sourceSets {
+    main
+}
+
+task apiJar(type: Jar) {
+    from sourceSets.main.output
+}
+
+artifacts {
+    archives apiJar
+}

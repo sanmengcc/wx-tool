@@ -1,0 +1,15 @@
+plugins {
+    id 'java'
+}
+
+group 'com.sanmengcc'
+version '1.0'
+archivesBaseName = 'core'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile("commons-beanutils:commons-beanutils:1.9.4")
+}
