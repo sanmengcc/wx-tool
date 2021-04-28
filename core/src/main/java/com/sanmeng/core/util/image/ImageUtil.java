@@ -1,10 +1,13 @@
 package com.sanmeng.core.util.image;
 
+import com.sanmeng.core.exception.WxException;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 
 /**
  * @Author：胡侯东
@@ -14,12 +17,40 @@ import java.io.ByteArrayInputStream;
 public class ImageUtil {
 
     /**
+     * 字节数组转BufferedImage
+     * @param image
+     * @return
+     */
+    public static BufferedImage byte2BufferedImage(byte[] image) {
+        try {
+            return ImageIO.read(new ByteArrayInputStream(image));
+        } catch (Exception e) {
+            throw new WxException("图片资源转换失败！请检查您的数据资源是否正确。");
+        }
+    }
+
+    /**
+     * BufferedImage转字节数组
+     * @param image
+     * @return
+     */
+    public static byte[] bufferedImage2Byte(BufferedImage image) {
+        try {
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            ImageIO.write(image,"png",outputStream);
+            return outputStream.toByteArray();
+        } catch (Exception e) {
+            throw new WxException("图片资源转换失败！请检查您的数据资源是否正确。");
+        }
+    }
+
+    /**
      * 合并图片
      * @param qrCode
      * @param image
      * @return
      */
-    public static BufferedImage mergeImage(BufferedImage qrCode, byte[] image) {
+    public static byte[] mergeImage(BufferedImage qrCode, byte[] image) {
         // 将头像转为圆角
         BufferedImage avatarImage = copeImage(image);
         //创建Graphics2D绘图
@@ -45,7 +76,7 @@ public class ImageUtil {
                 null);
         //关闭
         graphics.dispose();
-        return qrCode;
+        return ImageUtil.bufferedImage2Byte(qrCode);
     }
 
     /**

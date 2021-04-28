@@ -1,10 +1,8 @@
-package com.sanmeng.miniapp.domian;
+package com.sanmeng.miniapp.domian.qr;
 
-import com.alibaba.fastjson.JSONObject;
 import com.sanmeng.core.domain.BaseVo;
 import com.sanmeng.core.domain.Rgb;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 /**
  * @Author：胡侯东
@@ -12,7 +10,6 @@ import lombok.EqualsAndHashCode;
  * @Desc:
  */
 @Data
-@EqualsAndHashCode(callSuper=false)
 public class UnLimitQrVo extends BaseVo {
 
     private String scene;
