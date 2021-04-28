@@ -9,13 +9,13 @@ import com.sanmeng.miniapp.constants.QrConstants;
 import com.sanmeng.miniapp.domian.qr.UnLimitQrMergeVo;
 import com.sanmeng.miniapp.domian.qr.UnLimitQrVo;
 import com.sanmeng.miniapp.domian.result.StreamDomainVo;
-import lombok.experimental.SuperBuilder;
+import lombok.Builder;
 /**
  * @Author：胡侯东
  * @Date：2021/4/27 4:15 下午
  * @Desc: https://developers.weixin.qq.com/miniprogram/dev/api-backend/open-api/qr-code/wxacode.getUnlimited.html
  */
-@SuperBuilder
+@Builder
 public class UnLimitQrMergeProcessor extends BaseProcessor {
 
     public StreamDomainVo executor(UnLimitQrVo baseVo) {

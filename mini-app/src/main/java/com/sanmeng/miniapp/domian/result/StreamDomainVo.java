@@ -3,7 +3,6 @@ package com.sanmeng.miniapp.domian.result;
 import com.sanmeng.core.domain.ResultVo;
 import lombok.Builder;
 import lombok.Data;
-import lombok.experimental.SuperBuilder;
 
 /**
  * @Author：胡侯东
@@ -11,7 +10,7 @@ import lombok.experimental.SuperBuilder;
  * @Desc:
  */
 @Data
-@SuperBuilder
+@Builder
 public class StreamDomainVo extends ResultVo {
 
     private byte[] data;

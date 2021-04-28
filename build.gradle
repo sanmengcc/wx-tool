@@ -1,6 +1,4 @@
 plugins {
-    id 'org.springframework.boot' version '2.3.2.RELEASE'
-    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
     id 'maven'
     id 'idea'
@@ -45,13 +43,13 @@ subprojects {
 
     //配置依赖
     dependencies {
-        compileOnly 'org.projectlombok:lombok:1.18.16'
-        annotationProcessor 'org.projectlombok:lombok:1.18.16'
+        compileOnly 'org.projectlombok:lombok:1.18.8'
+        annotationProcessor 'org.projectlombok:lombok:1.18.8'
 
         compile ("com.alibaba:fastjson:1.2.73")
 
-        testCompileOnly 'org.projectlombok:lombok:1.18.16'
-        testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+        testCompileOnly 'org.projectlombok:lombok:1.18.8'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.8'
     }
 }
 

@@ -11,7 +11,6 @@ import java.io.Serializable;
  * @Desc:
  */
 @Data
-@Builder
 public class ResultVo implements Serializable {
 
     /**
@@ -19,13 +18,11 @@ public class ResultVo implements Serializable {
      * 0	请求成功
      * -1	系统繁忙，此时请开发者稍候再试
      */
-    @Builder.Default
     private Integer errcode = 0;
 
     /**
      * 错误信息
      */
-    @Builder.Default
     private String errmsg = "success";
 
 }

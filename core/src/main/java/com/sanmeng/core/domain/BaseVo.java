@@ -16,5 +16,6 @@ public class BaseVo implements Serializable {
     /**
      * 接口调用凭证
      */
-    protected String access_token;
+    private String access_token;
+
 }

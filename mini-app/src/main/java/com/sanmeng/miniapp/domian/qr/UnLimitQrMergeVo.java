@@ -2,6 +2,7 @@ package com.sanmeng.miniapp.domian.qr;
 
 import com.sanmeng.core.domain.BaseVo;
 import com.sanmeng.core.domain.Rgb;
+import lombok.Builder;
 import lombok.Data;
 
 /**
@@ -26,4 +27,14 @@ public class UnLimitQrMergeVo extends BaseVo {
      * 需要替换的logo
      */
     private byte[] mergeImage;
+
+    @Builder
+    public UnLimitQrMergeVo(String scene, String page, String width, boolean auto_color, Rgb line_color, byte[] mergeImage,String accessToken) {
+        this.scene = scene;
+        this.page = page;
+        this.width = width;
+        this.auto_color = auto_color;
+        this.line_color = line_color;
+        this.mergeImage = mergeImage;
+    }
 }
