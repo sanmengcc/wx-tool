@@ -1,2 +1,2 @@
-# wx-tool
+# wx-tool dev
 一个针对微信的工具包
