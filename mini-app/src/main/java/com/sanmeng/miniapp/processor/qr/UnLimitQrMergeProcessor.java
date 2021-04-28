@@ -1,4 +1,4 @@
-package com.sanmeng.miniapp.processor;
+package com.sanmeng.miniapp.processor.qr;
 
 import com.alibaba.fastjson.JSONObject;
 import com.sanmeng.core.processor.BaseProcessor;
