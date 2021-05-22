@@ -8,7 +8,7 @@ plugins {
 
 group 'com.sanmengcc'
 version '0.0.1'
-archivesBaseName = 'wx-tool-mini-app'
+archivesBaseName = 'wx-tool-app'
 
 def env = System.getProperty("env") ?: "prod"
 apply from: "build-${env}.gradle"

@@ -1,15 +1,36 @@
 plugins {
     id 'java'
+    id 'maven'
 }
 
 group 'com.sanmengcc'
-version '1.0'
+version '0.0.1'
 archivesBaseName = 'wx-tool-core'
 
+def env = System.getProperty("env") ?: "prod"
+apply from: "build-${env}.gradle"
+
+jar.enabled=true
 repositories {
     mavenCentral()
 }
 
+
 dependencies {
     compile("commons-beanutils:commons-beanutils:1.9.4")
+}
+uploadArchives() {
+    repositories {
+        mavenDeployer {
+            repository(url: 'https://packages.aliyun.com/maven/repository/2029070-snapshot-fQmI3B') {
+                authentication(
+                        userName: 'ow10JC',
+                        password: 'bP5PpIhTm2'
+                )
+            }
+            pom.version = "0.0.1"
+            pom.groupId = "com.sanmeng"
+            pom.artifactId = "wx-tool-core"
+        }
+    }
 }

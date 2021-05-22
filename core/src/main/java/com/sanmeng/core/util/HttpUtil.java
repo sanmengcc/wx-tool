@@ -1,6 +1,9 @@
 package com.sanmeng.core.util;
 
 
+
+import com.alibaba.fastjson.JSONObject;
+
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -25,6 +28,15 @@ public class HttpUtil {
     /**
      * post payload方式请求
      */
+    public static String payloadParam(String url, Object object) {
+        Map param = MyBeanUtil.bean2Map(object);
+        param.remove("access_token");
+        return getResponseBody(sendPost(url, JSONObject.toJSONString(param)));
+    }
+
+    /**
+     * post payload方式请求
+     */
     public static byte[] post(String url, String content, Map<String, String> header) {
         return getResponseStream(sendPost(url, content, header));
     }
@@ -32,7 +44,7 @@ public class HttpUtil {
     /**
      * post form表单
      */
-    public static String post(String url, Map<String, String> parameters) {
+    public static String post(String url, Map parameters) {
         String content = generatorParamString(parameters);
         return getResponseBody(sendPost(url, content));
     }
@@ -164,6 +176,7 @@ public class HttpUtil {
      * @return
      */
     private static HttpURLConnection sendPost(String url, String content) {
+        System.out.println(content);
         return sendPost(url, content, null);
     }
 
@@ -261,12 +274,12 @@ public class HttpUtil {
      * @param parameters
      * @return
      */
-    private static String generatorParamString(Map<String, String> parameters) {
+    private static String generatorParamString(Map parameters) {
         StringBuffer params = new StringBuffer();
         if (parameters != null) {
             for (Iterator<String> iter = parameters.keySet().iterator(); iter.hasNext(); ) {
                 String name = iter.next();
-                String value = parameters.get(name);
+                String value = parameters.get(name).toString();
                 params.append(name + "=");
                 try {
                     params.append(value);

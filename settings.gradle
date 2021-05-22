@@ -1,1 +1,4 @@
 include 'mini-app','core'
+include 'mp'
+include 'app'
+
