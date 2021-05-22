@@ -245,15 +245,15 @@ public class HttpUtil {
      * @param header
      * @return
      */
-    private static HttpURLConnection sendPost(String url, String content, Map<String, String> header) {
+    private static HttpURLConnection sendPost(String url, String content, Map header) {
         HttpURLConnection urlConn = getURLConnection(url);
         try {
             urlConn.setRequestMethod("POST");
             urlConn.setConnectTimeout(50000);
             urlConn.setReadTimeout(50000);
             if (Objects.nonNull(header) && !header.isEmpty()) {
-                for (String h : header.keySet()) {
-                    urlConn.setRequestProperty(h, header.get(h));
+                for (Object h : header.keySet()) {
+                    urlConn.setRequestProperty(h.toString(), header.get(h.toString()).toString());
                 }
             }
             urlConn.setDoOutput(true);
